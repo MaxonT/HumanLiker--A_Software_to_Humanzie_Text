@@ -1,11 +1,14 @@
 {
   "name": "humanliker",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node \"HumanLiker-v0.3(Cloud-Test)/backend/server.js\"",
-    "start": "NODE_ENV=production node \"HumanLiker-v0.3(Cloud-Test)/backend/server.js\""
+    "dev": "node backend/server.js",
+    "start": "NODE_ENV=production node backend/server.js",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "build": "npm run install:backend && npm run install:frontend && cd frontend && npm run build"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
