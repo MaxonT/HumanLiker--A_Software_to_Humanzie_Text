@@ -19,6 +19,7 @@ import { logger } from './utils/logger.js';
 import { generateTraceId } from './utils/trace.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { runHumanizationPipeline } from './pipeline/humanize.js';
+import { PERSONA_PROFILES, LANGUAGE_MARKERS, ENGINE_MODES } from './config/humanizerConfig.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,14 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 const dbPath = process.env.DATABASE_PATH || './data/humanliker.db';
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 const db = new Database(dbPath);
+
+function ensureColumn(table, column, type) {
+  const info = db.prepare(`PRAGMA table_info(${table})`).all();
+  const exists = info.some(col => col.name === column);
+  if (!exists) {
+    db.prepare(`ALTER TABLE ${table} ADD COLUMN ${column} ${type};`).run();
+  }
+}
 
 app.use(helmet());
 app.use(morgan('dev'));
@@ -98,6 +107,16 @@ CREATE TABLE IF NOT EXISTS pipeline_steps (
 );
 `);
 
+// Add new metadata columns without dropping existing data
+ensureColumn('requests', 'user_id', 'INTEGER');
+ensureColumn('requests', 'language', 'TEXT');
+ensureColumn('requests', 'persona', 'TEXT');
+ensureColumn('requests', 'mode', 'TEXT');
+ensureColumn('requests', 'human_score', 'REAL');
+ensureColumn('requests', 'persona_fidelity', 'REAL');
+ensureColumn('requests', 'risk_score', 'REAL');
+ensureColumn('requests', 'semantic_shift', 'REAL');
+
 function setAuthCookie(res, token) {
   res.cookie('hl_jwt', token, {
     httpOnly: true,
@@ -105,6 +124,17 @@ function setAuthCookie(res, token) {
     secure: false, // set true behind HTTPS in production
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
+}
+
+function getOptionalUserIdFromCookie(req) {
+  const token = req.cookies?.['hl_jwt'];
+  if (!token) return null;
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    return payload?.id || null;
+  } catch (err) {
+    return null;
+  }
 }
 
 function authRequired(req, res, next) {
@@ -211,6 +241,23 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req,
   res.json({ received: true });
 });
 
+app.get('/api/meta/options', (_req, res) => {
+  const languages = Object.keys(LANGUAGE_MARKERS).map(key => ({ key }));
+  const personas = Object.values(PERSONA_PROFILES).map(p => ({
+    key: p.name,
+    rhythmVariation: p.rhythmVariation,
+    targetRisk: p.targetRisk,
+    maxSemanticShift: p.maxSemanticShift
+  }));
+  const modes = Object.values(ENGINE_MODES).map(m => ({
+    key: m.name,
+    targetRisk: m.globalTargetRisk,
+    maxSemanticShift: m.globalMaxSemanticShift
+  }));
+
+  res.json({ languages, personas, modes });
+});
+
 
 app.post('/api/v1/humanize', async (req, res, next) => {
   const traceId = req.traceId || 'no-trace';
@@ -226,8 +273,11 @@ app.post('/api/v1/humanize', async (req, res, next) => {
     const persona = personaKey || 'casual_writer';
     const engineMode = mode || 'balanced';
 
-    const insertReq = db.prepare(`INSERT INTO requests (trace_id, status) VALUES (?, ?)`);
-    const info = insertReq.run(traceId, 'processing');
+    const userId = getOptionalUserIdFromCookie(req);
+    const insertReq = db.prepare(
+      `INSERT INTO requests (trace_id, status, user_id, language, persona, mode) VALUES (?, ?, ?, ?, ?, ?)`
+    );
+    const info = insertReq.run(traceId, 'processing', userId, lang, persona, engineMode);
     const requestId = info.lastInsertRowid;
 
     db.prepare(
@@ -248,8 +298,8 @@ app.post('/api/v1/humanize', async (req, res, next) => {
       `INSERT INTO request_texts (request_id, role, language, raw_text) VALUES (?, ?, ?, ?)`
     ).run(requestId, 'output', lang, result.outputText);
 
-    db.prepare(`UPDATE requests SET status = ?, error_code = NULL, error_message = NULL WHERE id = ?`)
-      .run('success', requestId);
+    db.prepare(`UPDATE requests SET status = ?, error_code = NULL, error_message = NULL, human_score = ?, persona_fidelity = ?, risk_score = ?, semantic_shift = ? WHERE id = ?`)
+      .run('success', result.humanScore, result.personaFidelity, result.riskScore, result.semanticShift, requestId);
 
     logger.info('humanize.success', 'Humanization completed', {
       traceId,
@@ -279,6 +329,31 @@ app.post('/api/v1/humanize', async (req, res, next) => {
 });
 
 app.get('/api/ping', (_req, res) => res.json({ pong: true }));
+
+app.get('/api/v1/history', authRequired, (req, res) => {
+  const items = db.prepare(
+    `SELECT 
+      r.id,
+      r.trace_id as traceId,
+      r.created_at as createdAt,
+      r.status,
+      r.language,
+      r.persona,
+      r.mode,
+      r.human_score as humanScore,
+      r.persona_fidelity as personaFidelity,
+      r.risk_score as riskScore,
+      r.semantic_shift as semanticShift,
+      (SELECT raw_text FROM request_texts WHERE request_id = r.id AND role = 'input' ORDER BY id ASC LIMIT 1) as inputText,
+      (SELECT raw_text FROM request_texts WHERE request_id = r.id AND role = 'output' ORDER BY id DESC LIMIT 1) as outputText
+    FROM requests r
+    WHERE r.user_id = ?
+    ORDER BY r.id DESC
+    LIMIT 20`
+  ).all(req.user.id);
+
+  res.json({ items });
+});
 
 // Legal docs (static JSON for convenience)
 app.get('/api/legal/privacy', (_req, res) => res.json({version: 'v0.3', updated: '2025-10-29'}));
