@@ -99,3 +99,46 @@ a{ color:var(--text) }
 .legal ul{ margin:8px 0 0 18px; padding:0 }
 .legal li{ margin:6px 0 }
 
+/* Toast notifications */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.toast {
+  font-size: 0.9rem;
+  max-width: 300px;
+}
+
+.toast-error {
+  border-color: var(--err);
+  color: var(--err);
+}
+
+.toast-success {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.toast-info {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+

@@ -1,0 +1,233 @@
+openapi: 3.0.0
+info:
+  title: HumanLiker API
+  version: 0.5.0
+  description: API for HumanLiker text transformation service
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns server health status and system information
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                  uptime:
+                    type: object
+                  system:
+                    type: object
+                  memory:
+                    type: object
+
+  /transform:
+    post:
+      summary: Transform text
+      description: Transform input text using AI model with specified tone and formality
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+                - tone
+                - formality
+              properties:
+                text:
+                  type: string
+                  minLength: 1
+                  maxLength: 50000
+                  description: Input text to transform
+                tone:
+                  type: string
+                  enum: [friendly, concise, confident, neutral]
+                  description: Desired tone
+                formality:
+                  type: string
+                  enum: [casual, balanced, formal]
+                  description: Desired formality level
+                sessionId:
+                  type: string
+                  format: uuid
+                  description: Optional session ID
+                modelPreference:
+                  type: string
+                  description: Optional model identifier
+      responses:
+        '200':
+          description: Transformation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  outputText:
+                    type: string
+                  scores:
+                    type: object
+                    properties:
+                      toneAccuracy:
+                        type: number
+                      humanLikeness:
+                        type: number
+                      tokenCost:
+                        type: number
+                  metadata:
+                    type: object
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Model service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /history:
+    get:
+      summary: Get history list
+      description: Get list of text transformation history records
+      parameters:
+        - name: sessionId
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by session ID
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Maximum number of records to return
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of records to skip
+      responses:
+        '200':
+          description: History list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HistoryRecord'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+
+    /{id}:
+      get:
+        summary: Get history record by ID
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+              format: uuid
+        responses:
+          '200':
+            description: History record found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/HistoryRecord'
+          '404':
+            description: History record not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+      delete:
+        summary: Delete history record
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+              format: uuid
+        responses:
+          '204':
+            description: Record deleted successfully
+          '404':
+            description: History record not found
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+
+    HistoryRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sessionId:
+          type: string
+          format: uuid
+        inputText:
+          type: string
+        outputText:
+          type: string
+        tone:
+          type: string
+        formality:
+          type: string
+        modelUsed:
+          type: string
+        scores:
+          type: object
+        metadata:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+

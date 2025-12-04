@@ -139,7 +139,6 @@
     const key = el.getAttribute('data-i18n');
     if(dict[key]) el.textContent = dict[key];
   });
-});
   }
   applyLang('en'); // default
 
@@ -172,6 +171,38 @@
   animateNumber(document.getElementById('kpiRPM'), 26, '', 650);
   animateNumber(document.getElementById('kpiProgress'), 73, '%', 650);
 
+  // API Client
+  const API_BASE_URL = 'http://localhost:3000/api';
+  async function apiRequest(endpoint, options = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const config = {
+      headers: { 'Content-Type': 'application/json', ...options.headers },
+      ...options
+    };
+    if (config.body && typeof config.body === 'object') {
+      config.body = JSON.stringify(config.body);
+    }
+    try {
+      const response = await fetch(url, config);
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}` } }));
+        throw new Error(error.error?.message || 'Request failed');
+      }
+      return await response.json();
+    } catch (error) {
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        throw new Error('Cannot connect to server. Please ensure the backend is running on port 3000.');
+      }
+      throw error;
+    }
+  }
+  async function transformText({ text, tone, formality, sessionId, modelPreference }) {
+    return apiRequest('/transform', {
+      method: 'POST',
+      body: { text, tone, formality, sessionId, modelPreference }
+    });
+  }
+
   // Demo "humanize"
   const inputArea = document.getElementById('inputArea');
   const outputArea = document.getElementById('outputArea');
@@ -179,23 +210,79 @@
   const copyBtn = document.getElementById('copyBtn');
   const copyHint = document.getElementById('copyHint');
 
+  // Fallback humanizeText function (kept for backward compatibility)
   function humanizeText(t, tone, grade){
-    // Demo rule-based tweaks (offline, no API)
     t = (t||'').trim();
     if(!t) return '';
-    // Normalize whitespace and sentence casing
     t = t.replace(/\s+/g,' ').replace(/(^\w|[\.\!\?]\s+\w)/g, s=> s.toUpperCase());
-    // Tone adjustments
     if(tone==='friendly'){ t = "Hey — " + t; }
     if(tone==='concise'){ t = t.replace(/\b(essentially|basically|actually)\b/gi,'').replace(/\s{2,}/g,' '); }
     if(tone==='confident'){ t = t.replace(/\b(might|maybe|perhaps)\b/gi,'will'); }
-    // Formality
     if(grade==='formal'){ t = t.replace(/\b(can't|won't|don't)\b/gi, m=>({'can\'t':'cannot','won\'t':'will not','don\'t':'do not'}[m.toLowerCase()])); }
     return t;
   }
 
-  runBtn && runBtn.addEventListener('click', ()=>{
-    outputArea.value = humanizeText(inputArea.value, document.getElementById('toneSelect').value, document.getElementById('gradeSelect').value);
+  // Update KPI indicators
+  function updateKPIs(scores) {
+    if (scores.toneAccuracy !== undefined) {
+      animateNumber(document.getElementById('kpiTone'), scores.toneAccuracy, '%', 300);
+    }
+    if (scores.humanLikeness !== undefined) {
+      animateNumber(document.getElementById('kpiHuman'), scores.humanLikeness, '', 300);
+    }
+    if (scores.tokenCost !== undefined) {
+      animateNumber(document.getElementById('kpiCost'), scores.tokenCost, '', 300);
+    }
+  }
+
+  // Humanize button click handler with API integration
+  runBtn && runBtn.addEventListener('click', async ()=>{
+    const text = inputArea.value.trim();
+    if (!text) {
+      copyHint.textContent = 'Please enter some text first.';
+      setTimeout(()=> copyHint.textContent = '', 2000);
+      return;
+    }
+
+    const tone = document.getElementById('toneSelect').value;
+    const formality = document.getElementById('gradeSelect').value;
+
+    // Disable button and show loading state
+    const originalText = runBtn.textContent;
+    runBtn.disabled = true;
+    runBtn.textContent = 'Processing...';
+    outputArea.value = '';
+    copyHint.textContent = '';
+
+    try {
+      // Call API
+      const result = await transformText({ text, tone, formality });
+      
+      // Update output
+      outputArea.value = result.outputText || '';
+      
+      // Update KPIs
+      if (result.scores) {
+        updateKPIs(result.scores);
+      }
+
+      copyHint.textContent = 'Ready ✓';
+      setTimeout(()=> copyHint.textContent = '', 2000);
+    } catch (error) {
+      // Show error message
+      copyHint.textContent = 'Error: ' + error.message;
+      outputArea.value = '';
+      
+      // Fallback to local processing if API fails
+      console.warn('API call failed, using fallback:', error.message);
+      outputArea.value = humanizeText(text, tone, formality);
+      copyHint.textContent = 'Using fallback (API unavailable)';
+      setTimeout(()=> copyHint.textContent = '', 3000);
+    } finally {
+      // Restore button state
+      runBtn.disabled = false;
+      runBtn.textContent = originalText;
+    }
   });
 
   copyBtn && copyBtn.addEventListener('click', ()=>{
@@ -203,4 +290,47 @@
     outputArea.select(); document.execCommand('copy');
     copyHint.textContent = 'Copied ✓'; setTimeout(()=> copyHint.textContent = '', 1000);
   });
+
+  // Toast notification system
+  function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;padding:12px 20px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);z-index:1000;animation:slideIn 0.3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // Initialize charts when Chart.js is available
+  if (typeof Chart !== 'undefined') {
+    // Chart initialization will be done when analytics data is loaded
+    // For now, charts remain as placeholders until analytics endpoint is called
+  }
+
+  // Load initial analytics data for KPIs (optional enhancement)
+  async function loadAnalytics() {
+    try {
+      const analytics = await apiRequest('/analytics?type=quality');
+      if (analytics && analytics.data) {
+        if (analytics.data.avgToneAccuracy) {
+          animateNumber(document.getElementById('kpiTone'), analytics.data.avgToneAccuracy, '%', 300);
+        }
+        if (analytics.data.avgHumanLikeness) {
+          animateNumber(document.getElementById('kpiHuman'), analytics.data.avgHumanLikeness, '', 300);
+        }
+        if (analytics.data.totalCost) {
+          animateNumber(document.getElementById('kpiCost'), analytics.data.totalCost, '', 300);
+        }
+      }
+    } catch (error) {
+      // Silently fail - analytics is optional
+      console.debug('Analytics loading failed:', error.message);
+    }
+  }
+
+  // Load analytics on page load (optional)
+  // loadAnalytics();
 })();
