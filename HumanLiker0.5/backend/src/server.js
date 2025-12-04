@@ -3,16 +3,16 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import healthRouter from './src/routes/health.js';
-import transformRouter from './src/routes/transform.js';
-import historyRouter from './src/routes/history.js';
-import sessionsRouter from './src/routes/sessions.js';
-import analyticsRouter from './src/routes/analytics.js';
-import presetsRouter from './src/routes/presets.js';
-import modelsRouter from './src/routes/models.js';
-import { setupLogger } from './src/utils/logger.js';
-import { initializeDatabase } from './src/db/index.js';
-import { handleError } from './src/utils/errors.js';
+import healthRouter from './routes/health.js';
+import transformRouter from './routes/transform.js';
+import historyRouter from './routes/history.js';
+import sessionsRouter from './routes/sessions.js';
+import analyticsRouter from './routes/analytics.js';
+import presetsRouter from './routes/presets.js';
+import modelsRouter from './routes/models.js';
+import { setupLogger } from './utils/logger.js';
+import { initializeDatabase } from './db/index.js';
+import { handleError } from './utils/errors.js';
 import rateLimit from 'express-rate-limit';
 
 // Load environment variables
