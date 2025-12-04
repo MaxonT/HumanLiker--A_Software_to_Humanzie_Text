@@ -56,10 +56,12 @@ GET /api/health
 
 ```
 backend/
-├── server.js              # Express 服务器入口
 ├── package.json           # 依赖配置
 ├── .env.example          # 环境变量模板
 ├── src/
+│   ├── server.js         # Express 服务器入口
+│   ├── index.js          # 数据库初始化
+│   ├── schema.js         # 数据库架构定义
 │   ├── routes/           # API 路由
 │   │   └── health.js     # 健康检查路由
 │   └── utils/            # 工具函数

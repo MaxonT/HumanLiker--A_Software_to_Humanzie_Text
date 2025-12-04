@@ -12,8 +12,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const requiredFiles = [
-  './src/db/index.js',
-  './src/db/schema.js',
+  './src/index.js',
+  './src/schema.js',
   './src/routes/health.js',
   './src/routes/transform.js',
   './src/routes/history.js',
@@ -27,7 +27,7 @@ const requiredFiles = [
   './src/utils/errors.js',
   './src/engines/ModelEngine.js',
   './src/config/models.js',
-  './server.js',
+  './src/server.js',
   './package.json'
 ];
 

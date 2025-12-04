@@ -1,5 +1,5 @@
-import { getDb } from '../db/index.js';
-import { textSamples, sessions } from '../db/schema.js';
+import { getDb } from '../index.js';
+import { textSamples, sessions } from '../schema.js';
 import { eq, desc, and, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { setupLogger } from '../utils/logger.js';
