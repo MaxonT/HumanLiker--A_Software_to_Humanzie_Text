@@ -13,7 +13,6 @@ services:
         value: 10000
       - key: CORS_ORIGIN
         value: https://your-frontend-url.onrender.com
-    # Node version will be determined by package.json engines field
-    # Or specify explicitly:
-    # nodeVersion: 20
+      - key: NODE_VERSION
+        value: 20
 
