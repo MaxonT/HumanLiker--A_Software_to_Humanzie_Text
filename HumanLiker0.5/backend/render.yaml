@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: humanliker-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: https://your-frontend-url.onrender.com
+    # Node version will be determined by package.json engines field
+    # Or specify explicitly:
+    # nodeVersion: 20
+
