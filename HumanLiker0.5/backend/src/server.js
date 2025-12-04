@@ -11,7 +11,7 @@ import analyticsRouter from './routes/analytics.js';
 import presetsRouter from './routes/presets.js';
 import modelsRouter from './routes/models.js';
 import { setupLogger } from './utils/logger.js';
-import { initializeDatabase } from './db/index.js';
+import { initializeDatabase } from './index.js';
 import { handleError } from './utils/errors.js';
 import rateLimit from 'express-rate-limit';
 
