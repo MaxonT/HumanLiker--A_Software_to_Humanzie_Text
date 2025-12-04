@@ -33,3 +33,7 @@ npm test
 ```
 
 All 41 tests pass successfully.
+
+## Implementation Details
+
+The StringHumanizer module is implemented as a standalone class with static methods for maximum reusability across the application.
