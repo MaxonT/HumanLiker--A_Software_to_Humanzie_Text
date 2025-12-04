@@ -1,6 +1,6 @@
 import express from 'express';
 import { validate, schemas } from '../middleware/validation.js';
-import { getDb } from '../db/index.js';
+import { getDb } from '../index.js';
 import { sessions } from '../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
