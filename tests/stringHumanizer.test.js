@@ -29,11 +29,11 @@ describe('StringHumanizer Unit Tests', () => {
       expect(StringHumanizer.humanize('user-profile-settings')).toBe('User profile settings');
     });
 
-    test('should preserve acronyms when appropriate', () => {
+    test('should handle acronyms in PascalCase', () => {
       const result = StringHumanizer.humanize('HTMLParser');
+      // Note: Current implementation inserts spaces and applies casing
+      // HTMLParser -> HTML Parser -> Html parser (sentence case)
       expect(result).toBe('Html parser');
-      // Note: The current implementation converts to lowercase, 
-      // but preserves word boundaries
     });
 
     test('should handle multiple spaces', () => {
