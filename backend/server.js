@@ -23,6 +23,10 @@ app.use(limiter);
 // Serve static files from frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// API routes
+const stringRoutes = require('./routes/stringRoutes');
+app.use('/api/string', stringRoutes);
+
 // API routes placeholder
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'HumanLiker server is running' });
