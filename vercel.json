@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "buildCommand": "cd HumanLiker0.5/backend && npm install",
+  "devCommand": "cd HumanLiker0.5/backend && npm run dev",
+  "installCommand": "echo 'Skipping root install'",
+  "framework": null,
+  "outputDirectory": "HumanLiker0.5/backend"
+}
