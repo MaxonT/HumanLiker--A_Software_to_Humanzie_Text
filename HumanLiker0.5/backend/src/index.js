@@ -5,7 +5,7 @@ import { dirname, join } from 'path';
 import { mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import * as schema from './schema.js';
-import { setupLogger } from '../utils/logger.js';
+import { setupLogger } from './utils/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
