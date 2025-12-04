@@ -26,11 +26,6 @@ app.get('/api/health', (req, res) => {
 // app.use('/api/number', require('./routes/numberRoutes'));
 // app.use('/api/bytesize', require('./routes/bytesizeRoutes'));
 
-// Serve frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
-
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -40,10 +35,15 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Serve frontend (catch-all route - must be last)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 HumanLiker 1.0 Server running on http://localhost:${PORT}`);
-  console.log(`📖 API Documentation: http://localhost:${PORT}/api/health`);
+  console.log(`✅ Health check: http://localhost:${PORT}/api/health`);
 });
 
 module.exports = app;
