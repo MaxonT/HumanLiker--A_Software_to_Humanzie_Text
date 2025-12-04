@@ -10,7 +10,9 @@ yarn.lock
 # Database
 *.db
 *.db-journal
-db/
+*.db-wal
+*.db-shm
+data/
 
 # Logs
 logs/
