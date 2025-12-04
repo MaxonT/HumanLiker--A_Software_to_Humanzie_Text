@@ -1,0 +1,24 @@
+========================================
+Render 模块找不到错误 - 立即修复
+========================================
+
+问题：
+Cannot find module 'backend/src/db/index.js'
+
+原因：
+Render 的 Root Directory 没有设置
+
+解决：
+在 Render 仪表板中设置：
+
+Settings → Build & Deploy → Root Directory
+设置为: backend
+
+Settings → Build & Deploy → Build Command  
+设置为: npm install
+
+Settings → Build & Deploy → Start Command
+设置为: npm start
+
+保存后重新部署即可！
+========================================
