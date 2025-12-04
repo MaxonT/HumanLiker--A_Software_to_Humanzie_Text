@@ -1,6 +1,5 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
@@ -51,6 +50,8 @@ export async function initializeDatabase() {
 
 /**
  * Create database tables
+ * Using raw SQL for bootstrapping to avoid requiring migration files.
+ * The schema.js file provides type definitions for Drizzle ORM queries.
  */
 async function createTables() {
   try {
