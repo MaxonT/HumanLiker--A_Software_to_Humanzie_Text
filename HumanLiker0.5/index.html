@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HumanLiker v0.4 — Promptly Style Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    
+<div class="brand brand-inline" aria-label="HumanLiker">
+  <svg class="brand-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" role="img" aria-label="HumanLiker">
+    <defs>
+      <linearGradient id="g1" x1="0%" y1="0%" x2="120%" y2="20%">
+        <stop offset="0%" stop-color="#58A6FF"/>
+        <stop offset="52%" stop-color="#7C3AED"/>
+        <stop offset="100%" stop-color="#00E0FF"/>
+      </linearGradient>
+      <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="rgba(124,58,237,0.38)"/>
+        <stop offset="100%" stop-color="rgba(6,182,212,0.00)"/>
+      </linearGradient>
+      <style>
+        @keyframes subtlyShift { 0%,100%{ letter-spacing:0px; transform:scale(1.000);} 50%{ letter-spacing:.2px; transform:scale(1.003);} }
+        .wordmark { animation: subtlyShift 6s ease-in-out infinite; }
+        .sharp { stroke:#FFFFFF; stroke-opacity:.07; stroke-width:.6px; paint-order:stroke fill; }
+      </style>
+    </defs>
+    <!-- icon -->
+    <g transform="translate(6,10) scale(0.92)">
+      <rect x="0" y="0" rx="12" ry="12" width="44" height="44" fill="url(#g2)"/>
+      <path d="M12 12 v20 h8 a10 10 0 0 0 0-20 z" fill="none" stroke="url(#g1)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="20" cy="22" r="3" fill="url(#g1)"/>
+    </g>
+    <!-- motif bar -->
+    <rect x="66" y="16" width="4" height="32" rx="2" fill="url(#g1)" opacity=".40"/>
+    <!-- wordmark -->
+    <g transform="translate(80, 14)" class="wordmark">
+      <text font-family="Poppins, Inter, system-ui" fill="url(#g1)">
+        <tspan x="0"  y="28" font-weight="900" font-size="28" class="sharp">H</tspan>
+        <tspan dx="1"  y="28" font-weight="800" font-size="24" class="sharp" letter-spacing="-0.4">uman</tspan>
+        <tspan dx="6"  y="28" font-weight="900" font-size="28" class="sharp">L</tspan>
+        <tspan dx="1"  y="28" font-weight="800" font-size="24" class="sharp" letter-spacing="-0.4">iker</tspan>
+      </text>
+    </g>
+  </svg>
+</div>
+
+    <nav class="controls">
+      <div class="navlinks"><a href="#dashboard" data-i18n="nav_dashboard">Dashboard</a><a href="#demo" data-i18n="nav_demo">Demo</a><a href="#docs" data-i18n="nav_docs">Docs</a><a href="#terms" data-i18n="nav_terms">Terms</a><a href="#privacy" data-i18n="nav_privacy">Privacy</a><a href="#cookies" data-i18n="nav_cookies">Cookies</a></div>
+      <label class="control"><span data-i18n="appearance">System</span>
+        <select id="themeSelect">
+          <option value="auto" data-i18n="system">System</option>
+          <option value="light" data-i18n="light">Light</option>
+          <option value="dark" data-i18n="dark">Dark</option>
+        </select>
+      </label>
+      <label class="control"><span data-i18n="language">English</span>
+        <select id="langSelect"></select>
+      </label>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <h1 data-i18n="hero_title">Make AI sound human — naturally.</h1>
+      <p class="hero-sub" data-i18n="hero_sub">HumanLiker rewrites model outputs into clear, warm, and natural language.</p>
+      <div class="cta">
+        <a href="#demo" class="btn primary" data-i18n="try_now">Try Now</a>
+        <a href="#docs" class="btn ghost" data-i18n="read_docs">Read Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container" id="dashboard">
+    <!-- KPI Cards -->
+    <section class="kpis">
+      <div class="kpi card">
+        <div class="metric-title grey-gradient-text" data-i18n="tone_acc">Tone Accuracy</div>
+        <div class="kpi-value" id="kpiTone">0%</div>
+      </div>
+      <div class="kpi card">
+        <div class="metric-title grey-gradient-text" data-i18n="hl_score">Human‑Likeness</div>
+        <div class="kpi-value" id="kpiHuman">0.0</div>
+      </div>
+      <div class="kpi card">
+        <div class="metric-title grey-gradient-text" data-i18n="token_cost">Token Cost</div>
+        <div class="kpi-value" id="kpiCost">0</div>
+      </div>
+      <div class="kpi card">
+        <div class="metric-title grey-gradient-text" data-i18n="rpm">Rewrites/min</div>
+        <div class="kpi-value" id="kpiRPM">0</div>
+      </div>
+      <div class="kpi card">
+        <div class="metric-title grey-gradient-text" data-i18n="progress">Progress %</div>
+        <div class="kpi-value" id="kpiProgress">0%</div>
+      </div>
+    </section>
+
+    <!-- Demo Panel -->
+    <section class="panel-grid" id="demo">
+      <div class="panel card">
+        <div class="panel-title" data-i18n="input_text">Input text</div>
+        <textarea id="inputArea" placeholder="Paste raw AI output here..."></textarea>
+        <div class="panel-row">
+          <label class="control sm">
+            <span data-i18n="tone">Tone</span>
+            <select id="toneSelect">
+              <option value="friendly">Friendly</option>
+              <option value="concise">Concise</option>
+              <option value="confident">Confident</option>
+              <option value="neutral">Neutral</option>
+            </select>
+          </label>
+          <label class="control sm">
+            <span data-i18n="grade">Formality</span>
+            <select id="gradeSelect">
+              <option value="casual">Casual</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="formal">Formal</option>
+            </select>
+          </label>
+          <button class="btn primary" id="runBtn" data-i18n="humanize">Humanize</button>
+        </div>
+      </div>
+      <div class="panel card">
+        <div class="panel-title" data-i18n="output_text">Output text</div>
+        <textarea id="outputArea" readonly placeholder="Your humanized text will appear here."></textarea>
+        <div class="panel-row">
+          <button class="btn ghost" id="copyBtn" data-i18n="copy">Copy</button>
+          <span class="hint" id="copyHint" aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simple chart placeholders -->
+    <section class="charts" id="docs">
+      <div class="card chart ph">
+        <div class="chart-title grey-gradient-text">Usage Growth</div>
+        <img src="assets/placeholder_line.png" alt="line chart placeholder" />
+      </div>
+      <div class="card chart ph">
+        <div class="chart-title grey-gradient-text">Distribution</div>
+        <img src="assets/placeholder_pie.png" alt="pie chart placeholder" />
+      </div>
+      <div class="card chart ph">
+        <div class="chart-title grey-gradient-text">Quality Gauge</div>
+        <img src="assets/placeholder_gauge.png" alt="gauge chart placeholder" />
+      </div>
+    </section>
+  
+    <!-- Legal sections -->
+    <section class="legal terms card" id="terms">
+      <h2 data-i18n="terms_title">Terms of Service</h2>
+      <p data-i18n="terms_intro">By using HumanLiker, you agree to these terms. Do not misuse or abuse the service. We may update these terms to reflect improvements.</p>
+      <ul>
+        <li data-i18n="terms_use">Use only for lawful and ethical purposes.</li>
+        <li data-i18n="terms_priv">We respect your privacy; see the Privacy Policy.</li>
+        <li data-i18n="terms_ip">You retain your content; we only process it to provide the service.</li>
+      </ul>
+    </section>
+    <section class="legal privacy card" id="privacy">
+      <h2 data-i18n="privacy_title">Privacy Policy</h2>
+      <p data-i18n="privacy_intro">We collect the minimum necessary data to operate the demo. No trackers by default. We store preferences only after your consent.</p>
+      <ul>
+        <li data-i18n="privacy_data">Data minimization and purpose limitation.</li>
+        <li data-i18n="privacy_storage">Short retention for logs; you can request deletion.</li>
+        <li data-i18n="privacy_cookies">See Cookies for preferences and analytics.</li>
+      </ul>
+    </section>
+    <section class="legal cookies card" id="cookies">
+      <h2 data-i18n="cookies_title">Cookies & Preferences</h2>
+      <p data-i18n="cookies_intro">We use cookies to remember your theme, language, and consent. Optional analytics only with your opt‑in.</p>
+      <ul>
+        <li data-i18n="cookies_prefs">Preference cookies: theme, language, UI layout.</li>
+        <li data-i18n="cookies_analytics">Analytics cookies: off by default; opt‑in only.</li>
+        <li data-i18n="cookies_control">You can clear cookies in your browser at any time.</li>
+      </ul>
+    </section>
+    
+</main>
+
+  <footer class="footer">
+    <div id="footer"></div>
+  </footer>
+
+  <script src="core.js"></script>
+</body>
+</html>
