@@ -1,6 +1,6 @@
 import { setupLogger } from '../utils/logger.js';
-import { getDb } from '../db/index.js';
-import { modelConfigs } from '../db/schema.js';
+import { getDb } from '../index.js';
+import { modelConfigs } from '../schema.js';
 import { eq, and } from 'drizzle-orm';
 
 const logger = setupLogger();

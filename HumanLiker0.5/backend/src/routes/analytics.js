@@ -1,6 +1,6 @@
 import express from 'express';
-import { getDb } from '../db/index.js';
-import { textSamples } from '../db/schema.js';
+import { getDb } from '../index.js';
+import { textSamples } from '../schema.js';
 import { sql, eq, and, gte } from 'drizzle-orm';
 import { setupLogger } from '../utils/logger.js';
 import { DatabaseError } from '../utils/errors.js';

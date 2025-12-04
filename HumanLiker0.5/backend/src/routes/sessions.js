@@ -1,7 +1,7 @@
 import express from 'express';
 import { validate, schemas } from '../middleware/validation.js';
 import { getDb } from '../index.js';
-import { sessions } from '../db/schema.js';
+import { sessions } from '../schema.js';
 import { eq, desc } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundError, DatabaseError } from '../utils/errors.js';

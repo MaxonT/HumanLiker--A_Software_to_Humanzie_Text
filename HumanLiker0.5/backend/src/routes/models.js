@@ -1,6 +1,6 @@
 import express from 'express';
-import { getDb } from '../db/index.js';
-import { modelConfigs } from '../db/schema.js';
+import { getDb } from '../index.js';
+import { modelConfigs } from '../schema.js';
 import { eq } from 'drizzle-orm';
 import { setupLogger } from '../utils/logger.js';
 import { modelConfigManager } from '../config/models.js';
