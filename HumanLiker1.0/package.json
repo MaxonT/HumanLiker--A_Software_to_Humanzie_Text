@@ -1,0 +1,32 @@
+{
+  "name": "humanliker-1.0",
+  "version": "1.0.0",
+  "description": "Complete Humanizer clone for JavaScript - All .NET features ported to Node.js",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "humanizer",
+    "string-manipulation",
+    "inflection",
+    "pluralization",
+    "date-formatting",
+    "number-to-words"
+  ],
+  "author": "MaxonT",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
