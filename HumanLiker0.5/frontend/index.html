@@ -186,6 +186,17 @@
     <div id="footer"></div>
   </footer>
 
+  <script src="config.js"></script>
+  <script>
+    // Initialize API URL from config or environment
+    // For Vercel deployment, set VERCEL_ENV_API_URL environment variable
+    // and use a build script to inject it, or manually edit config.js
+    if (typeof window.__API_CONFIG__ !== 'undefined') {
+      window.__API_URL__ = window.__API_CONFIG__.API_BASE_URL;
+    } else if (typeof window.__API_URL__ === 'undefined') {
+      window.__API_URL__ = 'http://localhost:3000/api';
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="core.js"></script>
 </body>

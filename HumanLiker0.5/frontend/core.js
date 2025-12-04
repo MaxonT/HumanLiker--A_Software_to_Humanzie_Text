@@ -172,7 +172,31 @@
   animateNumber(document.getElementById('kpiProgress'), 73, '%', 650);
 
   // API Client
-  const API_BASE_URL = 'http://localhost:3000/api';
+  // Get API base URL from configuration
+  function getApiBaseUrl() {
+    // Priority 1: Check for window.__API_URL__ (set in index.html)
+    if (typeof window !== 'undefined' && window.__API_URL__) {
+      const url = window.__API_URL__.trim();
+      if (url) {
+        return url;
+      }
+    }
+    // Priority 2: Check for config file
+    if (typeof window !== 'undefined' && window.__API_CONFIG__ && window.__API_CONFIG__.API_BASE_URL) {
+      return window.__API_CONFIG__.API_BASE_URL;
+    }
+    // Priority 3: Development - use localhost
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '') {
+        return 'http://localhost:3000/api';
+      }
+    }
+    // Priority 4: Production fallback - show warning
+    console.error('API URL not configured. Please set window.__API_URL__ or configure config.js');
+    return 'http://localhost:3000/api'; // Fallback to prevent complete failure
+  }
+  const API_BASE_URL = getApiBaseUrl();
   async function apiRequest(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const config = {
