@@ -43,6 +43,12 @@ HumanLiker is a comprehensive text humanization application that provides multip
 - **"Or" separator**: "apple, banana, or cherry"
 - **Oxford Comma**: Optional Oxford comma support
 
+### 🧭 Advanced Utilities
+- **Truncator**: Shared truncation engine for fixed length or word-count strategies
+- **Enum Processor**: Humanize/dehumanize enum-like values and flag lists
+- **Heading Converter**: Convert degrees to compass directions (N, NE, E...)
+- **Tuple Converter**: Format and parse tuple-like values
+
 ## Quick Start
 
 ### Installation
@@ -122,6 +128,21 @@ Body: { input, operation, separator, lastSeparator }
 Operations: humanize, humanizeOr, humanizeOxford
 ```
 
+### Advanced Utility Operations
+```
+POST /api/advanced/process
+Body: {
+  module: 'truncator' | 'enum' | 'heading' | 'tuple',
+  operation: string,
+  ...moduleSpecificPayload
+}
+Examples:
+- Truncator: { module: 'truncator', operation: 'fixed', input, length, strategy, from, ellipsis }
+- Enum: { module: 'enum', operation: 'list', values: ['Admin', 'ReadOnly'] }
+- Heading: { module: 'heading', degrees: 225 }
+- Tuple: { module: 'tuple', tuple: ['lat', 'long'] }
+```
+
 ## Project Structure
 
 ```
@@ -137,7 +158,11 @@ Operations: humanize, humanizeOr, humanizeOxford
 │   │   ├── ByteSize.js
 │   │   ├── CollectionHumanizer.js
 │   │   ├── DateTimeHumanizer.js
-│   │   └── TimeSpanHumanizer.js
+│   │   ├── TimeSpanHumanizer.js
+│   │   ├── Truncator.js
+│   │   ├── EnumProcessor.js
+│   │   ├── HeadingConverter.js
+│   │   └── TupleConverter.js
 │   ├── routes/             # API routes
 │   └── server.js           # Express server
 ├── frontend/
