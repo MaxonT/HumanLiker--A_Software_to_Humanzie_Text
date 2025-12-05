@@ -167,8 +167,6 @@ class NumberToWords {
       words = words.slice(0, -5) + 'eighth';
     } else if (words.endsWith('nine')) {
       words = words.slice(0, -4) + 'ninth';
-    } else if (words.endsWith('twelve')) {
-      words = words.slice(0, -6) + 'twelfth';
     } else {
       words += 'th';
     }
