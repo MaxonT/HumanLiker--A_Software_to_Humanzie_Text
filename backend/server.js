@@ -45,6 +45,9 @@ app.use('/api/bytesize', bytesizeRoutes);
 const collectionRoutes = require('./routes/collectionRoutes');
 app.use('/api/collection', collectionRoutes);
 
+const advancedRoutes = require('./routes/advancedRoutes');
+app.use('/api/advanced', advancedRoutes);
+
 // API routes placeholder
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'HumanLiker server is running' });

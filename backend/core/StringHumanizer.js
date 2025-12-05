@@ -2,6 +2,7 @@
  * StringHumanizer - Core module for humanizing and dehumanizing strings
  * Handles various string transformations including case conversions and truncation
  */
+const Truncator = require('./Truncator');
 
 class StringHumanizer {
   /**
@@ -110,41 +111,7 @@ class StringHumanizer {
    * @returns {string} - The truncated string
    */
   static truncate(input, length, truncator = 'FixedLength', from = 'Right') {
-    // Handle null/undefined
-    if (input == null) return '';
-    
-    const str = String(input);
-    if (str.trim() === '') return '';
-    
-    // Validate length
-    const maxLength = parseInt(length, 10);
-    if (isNaN(maxLength) || maxLength <= 0) return str;
-    
-    if (truncator === 'FixedLength') {
-      // Truncate by character count
-      if (str.length <= maxLength) return str;
-      
-      if (from === 'Left') {
-        return '...' + str.slice(str.length - maxLength + 3);
-      } else {
-        // Default: from Right
-        return str.slice(0, maxLength - 3) + '...';
-      }
-    } else if (truncator === 'FixedNumberOfWords') {
-      // Truncate by word count
-      const words = str.split(/\s+/);
-      
-      if (words.length <= maxLength) return str;
-      
-      if (from === 'Left') {
-        return '... ' + words.slice(words.length - maxLength).join(' ');
-      } else {
-        // Default: from Right
-        return words.slice(0, maxLength).join(' ') + ' ...';
-      }
-    }
-    
-    return str;
+    return Truncator.truncate(input, length, truncator, from);
   }
 }
 
