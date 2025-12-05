@@ -97,12 +97,13 @@ class Inflector {
       return str.slice(0, -3) + 'y';
     }
     
-    // Words ending in ves -> change to f or fe (use f for simplicity)
+    // Words ending in ves -> change to f or fe
     if (/ves$/i.test(str)) {
-      // Check if it should end in 'fe' (like knife -> knives)
-      if (/ives$/i.test(str)) {
-        return str.slice(0, -3) + 'fe';
+      // Words ending in 'ives' with consonant before (knife->knives, wife->wives) -> change ives to ife
+      if (/[^aeiou]ives$/i.test(str)) {
+        return str.slice(0, -4) + 'ife';
       }
+      // Words ending in 'eaves' (leaf->leaves) -> change ves to f
       return str.slice(0, -3) + 'f';
     }
     

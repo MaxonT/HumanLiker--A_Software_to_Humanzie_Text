@@ -126,6 +126,186 @@
                   
                   <div id="inflector-error" class="error-message hidden"></div>
                 </div>
+
+                <!-- Numbers Module -->
+                <div class="module-panel numbers-module">
+                  <h2>Numbers</h2>
+                  <p class="module-description">Convert numbers to words, ordinals, Roman numerals, and more</p>
+                  
+                  <div class="form-group">
+                    <label for="numbers-input">Input:</label>
+                    <input type="text" id="numbers-input" placeholder="Enter number or Roman numeral (e.g., 42, XLII)" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="numbers-operation">Operation:</label>
+                      <select id="numbers-operation">
+                        <option value="toWords">To Words</option>
+                        <option value="toOrdinal">To Ordinal (1st, 2nd)</option>
+                        <option value="toOrdinalWords">To Ordinal Words</option>
+                        <option value="toRoman">To Roman Numeral</option>
+                        <option value="fromRoman">From Roman Numeral</option>
+                        <option value="toMetric">To Metric (K, M, B)</option>
+                        <option value="fromMetric">From Metric</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-numbers-btn" class="btn-primary">Process</button>
+                  
+                  <div id="numbers-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="numbers-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="numbers-error" class="error-message hidden"></div>
+                </div>
+
+                <!-- DateTime Module -->
+                <div class="module-panel datetime-module">
+                  <h2>DateTime Humanizer</h2>
+                  <p class="module-description">Humanize dates and times</p>
+                  
+                  <div class="form-group">
+                    <label for="datetime-input">Date/Time:</label>
+                    <input type="datetime-local" id="datetime-input" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="datetime-operation">Operation:</label>
+                      <select id="datetime-operation">
+                        <option value="humanize">Humanize (e.g., "2 days ago")</option>
+                        <option value="format">Format</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="format-type-group">
+                      <label for="format-type">Format Type:</label>
+                      <select id="format-type">
+                        <option value="short">Short</option>
+                        <option value="medium">Medium</option>
+                        <option value="long">Long</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-datetime-btn" class="btn-primary">Process</button>
+                  
+                  <div id="datetime-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="datetime-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="datetime-error" class="error-message hidden"></div>
+                </div>
+
+                <!-- TimeSpan Module -->
+                <div class="module-panel timespan-module">
+                  <h2>TimeSpan Humanizer</h2>
+                  <p class="module-description">Humanize time durations</p>
+                  
+                  <div class="form-group">
+                    <label for="timespan-input">Duration (milliseconds):</label>
+                    <input type="number" id="timespan-input" placeholder="Enter duration in milliseconds" value="3661000" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="timespan-operation">Operation:</label>
+                      <select id="timespan-operation">
+                        <option value="humanize">Humanize</option>
+                        <option value="toUnit">To Unit</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group" id="verbose-group">
+                      <label for="timespan-verbose">Verbose:</label>
+                      <input type="checkbox" id="timespan-verbose" />
+                    </div>
+                    
+                    <div class="form-group hidden" id="unit-group">
+                      <label for="timespan-unit">Unit:</label>
+                      <select id="timespan-unit">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                        <option value="days">Days</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-timespan-btn" class="btn-primary">Process</button>
+                  
+                  <div id="timespan-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="timespan-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="timespan-error" class="error-message hidden"></div>
+                </div>
+
+                <!-- ByteSize Module -->
+                <div class="module-panel bytesize-module">
+                  <h2>ByteSize Humanizer</h2>
+                  <p class="module-description">Humanize byte sizes</p>
+                  
+                  <div class="form-group">
+                    <label for="bytesize-input">Input:</label>
+                    <input type="text" id="bytesize-input" placeholder="Enter bytes or size (e.g., 1024, 1.5 MB)" value="1048576" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="bytesize-operation">Operation:</label>
+                      <select id="bytesize-operation">
+                        <option value="humanize">Humanize</option>
+                        <option value="parse">Parse to Bytes</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-bytesize-btn" class="btn-primary">Process</button>
+                  
+                  <div id="bytesize-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="bytesize-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="bytesize-error" class="error-message hidden"></div>
+                </div>
+
+                <!-- Collection Module -->
+                <div class="module-panel collection-module">
+                  <h2>Collection Humanizer</h2>
+                  <p class="module-description">Join collections with natural language</p>
+                  
+                  <div class="form-group">
+                    <label for="collection-input">Items (comma-separated):</label>
+                    <input type="text" id="collection-input" placeholder="Enter items separated by commas (e.g., apple, banana, cherry)" value="apple, banana, cherry" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="collection-operation">Operation:</label>
+                      <select id="collection-operation">
+                        <option value="humanize">Humanize (and)</option>
+                        <option value="humanizeOr">Humanize (or)</option>
+                        <option value="humanizeOxford">Oxford Comma</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-collection-btn" class="btn-primary">Process</button>
+                  
+                  <div id="collection-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="collection-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="collection-error" class="error-message hidden"></div>
+                </div>
             </div>
         </main>
         
@@ -136,6 +316,11 @@
     
     <script src="js/modules/stringModule.js"></script>
     <script src="js/modules/inflectorModule.js"></script>
+    <script src="js/modules/numbersModule.js"></script>
+    <script src="js/modules/datetimeModule.js"></script>
+    <script src="js/modules/timespanModule.js"></script>
+    <script src="js/modules/bytesizeModule.js"></script>
+    <script src="js/modules/collectionModule.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

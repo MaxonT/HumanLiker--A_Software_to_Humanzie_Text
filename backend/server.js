@@ -30,6 +30,21 @@ app.use('/api/string', stringRoutes);
 const inflectorRoutes = require('./routes/inflectorRoutes');
 app.use('/api/inflector', inflectorRoutes);
 
+const numbersRoutes = require('./routes/numbersRoutes');
+app.use('/api/numbers', numbersRoutes);
+
+const datetimeRoutes = require('./routes/datetimeRoutes');
+app.use('/api/datetime', datetimeRoutes);
+
+const timespanRoutes = require('./routes/timespanRoutes');
+app.use('/api/timespan', timespanRoutes);
+
+const bytesizeRoutes = require('./routes/bytesizeRoutes');
+app.use('/api/bytesize', bytesizeRoutes);
+
+const collectionRoutes = require('./routes/collectionRoutes');
+app.use('/api/collection', collectionRoutes);
+
 // API routes placeholder
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'HumanLiker server is running' });
