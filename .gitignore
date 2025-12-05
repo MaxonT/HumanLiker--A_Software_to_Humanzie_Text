@@ -1,1 +1,10 @@
 HumanLiker0.5/.DS_Store
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+*.log
+coverage/
+.vscode/
+.idea/
