@@ -1,85 +1,65 @@
-⸻
+# HumanLiker - A Software to Humanize Text
 
-🧭 Running Instructions!!
+## Overview
 
-🖥️ Run Locally
-	1.	Download humanzier-site-v0.2.zip
-	2.	Unzip → open index.html in your browser
+HumanLiker is a full-featured text humanizer application that rewrites text to sound more natural and human-like. This project is a complete rebuild and enhancement of the original Humanizer project, featuring a modern Express backend and a streamlined frontend interface.
 
------
+## Features
 
-🧠 Humanzier
+- **Local-first Processing**: All text processing happens on your machine
+- **Multiple Language Support**: English and Chinese text humanization
+- **Tone Control**: Adjust tone (Neutral, Friendly, Assertive, Storytelling)
+- **Customizable Humanization**: Control naturalness and formality levels
+- **Privacy-focused**: No data collection or tracking
 
-Humanize your text. Locally. Privately. Naturally.
-Rewrite any English or Chinese text into a smoother, more natural, human-like style — with adjustable tone, rhythm, and personality.
+## Quick Start
 
-⸻
+### Installation
 
-🚀 Overview
+```bash
+npm install
+```
 
-Humanzier is a local-first, rule-based text humanizer.
-It runs fully inside your browser — no servers, no tracking, no data collection.
-Perfect for creators, writers, and professionals who want authentic, natural-sounding text.
+### Running the Application
 
-⸻
+```bash
+npm start
+```
 
-✨ Key Features
+The application will be available at `http://localhost:3000`
 
-Feature	Description
-🌍 English-first UI	Switchable to 中文 anytime
-🈹 Language Control	Auto Detect / English / 中文
-🗣️ Tone	Neutral / Friendly / Assertive / Storytelling
-🧩 Humanize Level	Control naturalness & formality
-✏️ Smart Rewrite	Vary length, add discourse markers, swap synonyms
-🔒 100% Local	No network, no cookies, no data stored
-💾 PWA Support	Offline, installable, browser-native
+### Development Mode
 
+```bash
+npm run dev
+```
 
-⸻
+### Running Tests
 
-🔐 Privacy
+```bash
+npm test
+```
 
-All processing happens locally — nothing is uploaded.
-Use it for authenticity and clarity, not deception.
+## Project Structure
 
-✅ Improve tone and flow
-🚫 No plagiarism or fake authorship
+```
+├── backend/          # Express server
+├── frontend/         # Static HTML, CSS, and JavaScript
+├── tests/           # Jest test files
+└── package.json     # Project dependencies
+```
 
-⸻
+## Original Project
 
-🧠 Philosophy
+This project is based on the original [Humanizer](https://github.com/MaxonT/HumanLiker--A_Software_to_Humanzie_Text) repository.
 
-“Writing shouldn’t sound like a machine — it should breathe like a human.”
+## License
 
-Humanzier restores rhythm, emotion, and individuality to your words.
+MIT License (see LICENSE.txt)
 
-⸻
+## Next Steps
 
-🛠️ Tech & Dev Notes
-	•	Stack: HTML5 · CSS3 · JavaScript (Vanilla)
-	•	Offline: PWA-ready
-	•	Editable Files:
-	•	script.js — rewrite rules
-	•	i18n.js — language dictionary
-	•	sw.js — PWA caching
-	•	manifest.webmanifest — metadata
-
-⸻
-
-🪪 License
-
-© 2025 Tiger — MIT License
-Attribution appreciated, not required.
-
-⸻
-
-🌟 Quick Summary
-
-Goal	Status
-Human-like writing	✅
-Global & bilingual	✅
-Fully local & private	✅
-Offline-ready	✅
-
-
-⸻
+- Implement core string manipulation modules
+- Add inflector functionality
+- Enhance humanization algorithms
+- Expand test coverage

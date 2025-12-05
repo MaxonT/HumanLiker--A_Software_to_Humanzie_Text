@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HumanLiker - Humanize Your Text</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HumanLiker</h1>
+            <p class="subtitle">A Software to Humanize Text</p>
+        </header>
+        
+        <main>
+            <div id="app-container">
+                <!-- String Humanizer Module -->
+                <div class="module-panel string-module">
+                  <h2>String Humanizer</h2>
+                  <p class="module-description">Transform text between different formats and cases</p>
+                  
+                  <div class="form-group">
+                    <label for="string-input">Input Text:</label>
+                    <textarea id="string-input" rows="4" placeholder="Enter text to process (e.g., HelloWorld, snake_case, kebab-case)"></textarea>
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="string-operation">Operation:</label>
+                      <select id="string-operation">
+                        <option value="humanize">Humanize</option>
+                        <option value="dehumanize">Dehumanize</option>
+                        <option value="truncate">Truncate</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group" id="casing-group">
+                      <label for="string-casing">Casing:</label>
+                      <select id="string-casing">
+                        <option value="sentence">Sentence case</option>
+                        <option value="title">Title Case</option>
+                        <option value="lower">lower case</option>
+                        <option value="upper">UPPER CASE</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="truncate-group">
+                      <label for="truncate-length">Length:</label>
+                      <input type="number" id="truncate-length" min="1" value="50" />
+                    </div>
+                    
+                    <div class="form-group hidden" id="truncator-group">
+                      <label for="truncator-type">Type:</label>
+                      <select id="truncator-type">
+                        <option value="FixedLength">Fixed Length</option>
+                        <option value="FixedNumberOfWords">Fixed Words</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="truncate-from-group">
+                      <label for="truncate-from">From:</label>
+                      <select id="truncate-from">
+                        <option value="Right">Right</option>
+                        <option value="Left">Left</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-string-btn" class="btn-primary">Process String</button>
+                  
+                  <div id="string-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="string-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="string-error" class="error-message hidden"></div>
+                </div>
+                
+                <!-- Inflector Module -->
+                <div class="module-panel inflector-module">
+                  <h2>Inflector</h2>
+                  <p class="module-description">Pluralize, singularize, and transform word cases</p>
+                  
+                  <div class="form-group">
+                    <label for="inflector-input">Input Text:</label>
+                    <input type="text" id="inflector-input" placeholder="Enter word or text (e.g., person, HelloWorld)" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="inflector-operation">Operation:</label>
+                      <select id="inflector-operation">
+                        <option value="pluralize">Pluralize</option>
+                        <option value="singularize">Singularize</option>
+                        <option value="pascalize">PascalCase</option>
+                        <option value="camelize">camelCase</option>
+                        <option value="underscore">underscore_case</option>
+                        <option value="dasherize">dasherize</option>
+                        <option value="kebaberize">kebab-case</option>
+                        <option value="titleize">Title Case</option>
+                        <option value="toQuantity">To Quantity</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="quantity-group">
+                      <label for="inflector-quantity">Quantity:</label>
+                      <input type="number" id="inflector-quantity" min="0" value="2" />
+                    </div>
+                    
+                    <div class="form-group hidden" id="quantity-format-group">
+                      <label for="quantity-format">Format:</label>
+                      <select id="quantity-format">
+                        <option value="Numeric">Numeric</option>
+                        <option value="Words">Words</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-inflector-btn" class="btn-primary">Process</button>
+                  
+                  <div id="inflector-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="inflector-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="inflector-error" class="error-message hidden"></div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 HumanLiker - MIT License</p>
+        </footer>
+    </div>
+    
+    <script src="js/modules/stringModule.js"></script>
+    <script src="js/modules/inflectorModule.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
