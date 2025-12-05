@@ -76,6 +76,56 @@
                   
                   <div id="string-error" class="error-message hidden"></div>
                 </div>
+                
+                <!-- Inflector Module -->
+                <div class="module-panel inflector-module">
+                  <h2>Inflector</h2>
+                  <p class="module-description">Pluralize, singularize, and transform word cases</p>
+                  
+                  <div class="form-group">
+                    <label for="inflector-input">Input Text:</label>
+                    <input type="text" id="inflector-input" placeholder="Enter word or text (e.g., person, HelloWorld)" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="inflector-operation">Operation:</label>
+                      <select id="inflector-operation">
+                        <option value="pluralize">Pluralize</option>
+                        <option value="singularize">Singularize</option>
+                        <option value="pascalize">PascalCase</option>
+                        <option value="camelize">camelCase</option>
+                        <option value="underscore">underscore_case</option>
+                        <option value="dasherize">dasherize</option>
+                        <option value="kebaberize">kebab-case</option>
+                        <option value="titleize">Title Case</option>
+                        <option value="toQuantity">To Quantity</option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="quantity-group">
+                      <label for="inflector-quantity">Quantity:</label>
+                      <input type="number" id="inflector-quantity" min="0" value="2" />
+                    </div>
+                    
+                    <div class="form-group hidden" id="quantity-format-group">
+                      <label for="quantity-format">Format:</label>
+                      <select id="quantity-format">
+                        <option value="Numeric">Numeric</option>
+                        <option value="Words">Words</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button id="process-inflector-btn" class="btn-primary">Process</button>
+                  
+                  <div id="inflector-result" class="result-container hidden">
+                    <h3>Result:</h3>
+                    <div id="inflector-output" class="output-text"></div>
+                  </div>
+                  
+                  <div id="inflector-error" class="error-message hidden"></div>
+                </div>
             </div>
         </main>
         
@@ -85,6 +135,7 @@
     </div>
     
     <script src="js/modules/stringModule.js"></script>
+    <script src="js/modules/inflectorModule.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
