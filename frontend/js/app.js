@@ -19,6 +19,9 @@
             // Initialize String Humanizer UI
             this.initStringHumanizer();
             
+            // Initialize Inflector UI
+            this.initInflector();
+            
             console.log('HumanLiker ready.');
         },
         
@@ -112,6 +115,85 @@
                     // Re-enable button
                     processBtn.disabled = false;
                     processBtn.textContent = 'Process String';
+                }
+            });
+        },
+        
+        // Initialize Inflector module
+        initInflector: function() {
+            const operationSelect = document.getElementById('inflector-operation');
+            const processBtn = document.getElementById('process-inflector-btn');
+            
+            if (!operationSelect || !processBtn) {
+                console.log('Inflector UI not found, skipping initialization');
+                return;
+            }
+            
+            // Show/hide quantity fields based on operation
+            operationSelect.addEventListener('change', function() {
+                const operation = this.value;
+                const quantityGroup = document.getElementById('quantity-group');
+                const quantityFormatGroup = document.getElementById('quantity-format-group');
+                
+                if (operation === 'toQuantity') {
+                    quantityGroup.classList.remove('hidden');
+                    quantityFormatGroup.classList.remove('hidden');
+                } else {
+                    quantityGroup.classList.add('hidden');
+                    quantityFormatGroup.classList.add('hidden');
+                }
+            });
+            
+            // Process button click handler
+            processBtn.addEventListener('click', async function() {
+                const input = document.getElementById('inflector-input').value;
+                const operation = document.getElementById('inflector-operation').value;
+                const quantity = document.getElementById('inflector-quantity').value;
+                const showQuantityAs = document.getElementById('quantity-format').value;
+                
+                const resultContainer = document.getElementById('inflector-result');
+                const outputDiv = document.getElementById('inflector-output');
+                const errorDiv = document.getElementById('inflector-error');
+                
+                // Hide previous results
+                resultContainer.classList.add('hidden');
+                errorDiv.classList.add('hidden');
+                
+                // Validate input
+                if (!input || input.trim() === '') {
+                    errorDiv.textContent = 'Please enter some text to process';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                
+                // Disable button during processing
+                processBtn.disabled = true;
+                processBtn.textContent = 'Processing...';
+                
+                try {
+                    // Call the API
+                    const result = await InflectorModule.processInflector({
+                        input,
+                        operation,
+                        quantity: parseInt(quantity),
+                        showQuantityAs
+                    });
+                    
+                    if (result.success) {
+                        outputDiv.textContent = result.output;
+                        resultContainer.classList.remove('hidden');
+                    } else {
+                        errorDiv.textContent = result.error || 'An error occurred';
+                        errorDiv.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    errorDiv.textContent = 'Failed to process: ' + error.message;
+                    errorDiv.classList.remove('hidden');
+                } finally {
+                    // Re-enable button
+                    processBtn.disabled = false;
+                    processBtn.textContent = 'Process';
                 }
             });
         }

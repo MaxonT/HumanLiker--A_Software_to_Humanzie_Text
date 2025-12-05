@@ -27,6 +27,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const stringRoutes = require('./routes/stringRoutes');
 app.use('/api/string', stringRoutes);
 
+const inflectorRoutes = require('./routes/inflectorRoutes');
+app.use('/api/inflector', inflectorRoutes);
+
 // API routes placeholder
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'HumanLiker server is running' });
