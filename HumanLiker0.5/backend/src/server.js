@@ -10,6 +10,11 @@ import sessionsRouter from './routes/sessions.js';
 import analyticsRouter from './routes/analytics.js';
 import presetsRouter from './routes/presets.js';
 import modelsRouter from './routes/models.js';
+import numberRouter from './routes/number.js';
+import datetimeRouter from './routes/datetime.js';
+import durationRouter from './routes/duration.js';
+import bytesizeRouter from './routes/bytesize.js';
+import collectionRouter from './routes/collection.js';
 import { setupLogger } from './utils/logger.js';
 import { initializeDatabase } from './index.js';
 import { handleError } from './utils/errors.js';
@@ -67,6 +72,11 @@ app.use('/api/sessions', sessionsRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/presets', presetsRouter);
 app.use('/api/models', modelsRouter);
+app.use('/api/number', numberRouter);
+app.use('/api/datetime', datetimeRouter);
+app.use('/api/duration', durationRouter);
+app.use('/api/bytesize', bytesizeRouter);
+app.use('/api/collection', collectionRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {
