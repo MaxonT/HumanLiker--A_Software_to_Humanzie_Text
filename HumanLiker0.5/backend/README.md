@@ -52,6 +52,18 @@ GET /api/health
 
 返回服务器健康状态和系统信息。
 
+### Tiger.Humanizer Playground 适配器
+
+```
+POST /api/humanizer/playground
+```
+
+- **kind**: `string` | `number` | `datetime` | `timespan` | `collection` | `enum`
+- **culture**: 文化代码（如 `en`, `zh`, `fr-FR`）
+- **value**: 输入内容
+
+当 `kind=string` 时，调用 v0.5 的 transform 管道并返回得分与元数据；其它类型提供示例化的描述，方便 Tiger.Humanizer Playground 在后端模式下演示。
+
 ## 项目结构
 
 ```

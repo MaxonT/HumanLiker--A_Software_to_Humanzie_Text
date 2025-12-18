@@ -10,6 +10,7 @@ import sessionsRouter from './routes/sessions.js';
 import analyticsRouter from './routes/analytics.js';
 import presetsRouter from './routes/presets.js';
 import modelsRouter from './routes/models.js';
+import humanizerRouter from './routes/humanizer.js';
 import { setupLogger } from './utils/logger.js';
 import { initializeDatabase } from './index.js';
 import { handleError } from './utils/errors.js';
@@ -67,6 +68,7 @@ app.use('/api/sessions', sessionsRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/presets', presetsRouter);
 app.use('/api/models', modelsRouter);
+app.use('/api/humanizer', humanizerRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {

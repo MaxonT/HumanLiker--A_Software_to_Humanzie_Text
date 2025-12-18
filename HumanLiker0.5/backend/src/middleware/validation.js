@@ -106,6 +106,15 @@ export const schemas = {
     params: z.object({
       id: z.string().uuid()
     })
+  }),
+
+  // Tiger.Humanizer playground adapter
+  humanizerPlayground: z.object({
+    body: z.object({
+      kind: z.enum(['string', 'datetime', 'timespan', 'number', 'collection', 'enum']),
+      culture: z.string().min(2).max(10),
+      value: z.string().min(1).max(2000)
+    })
   })
 };
 
