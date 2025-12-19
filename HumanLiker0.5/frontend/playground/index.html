@@ -841,6 +841,10 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ kind, culture, value })
           });
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(`HTTP ${res.status}: ${errorData.error || res.statusText}`);
+          }
           const data = await res.json();
           originalOut.textContent = data.original ?? value;
           humanizedOut.textContent = data.humanized ?? "—";
