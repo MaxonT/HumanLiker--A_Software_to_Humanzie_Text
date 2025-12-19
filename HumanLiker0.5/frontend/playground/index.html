@@ -885,6 +885,12 @@
     });
 
     clearBtn.addEventListener("click", () => {
+      // Stop any running pipeline animation
+      if (pipelineTimer) {
+        clearInterval(pipelineTimer);
+        pipelineTimer = null;
+      }
+      
       payloadEl.value = "";
       originalOut.textContent = "—";
       humanizedOut.textContent = "—";
