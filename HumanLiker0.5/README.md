@@ -78,6 +78,7 @@ cp .env.example .env
 - ✅ **预设管理**：保存和加载常用配置
 - ✅ **多语言支持**：8 种语言国际化
 - ✅ **主题切换**：浅色/深色/自动主题
+- ✅ **Tiger.Humanizer Playground**：在 `frontend/playground/` 运行全新的 UI，默认直连 v0.5 后端的 `/api/humanizer/playground` 端点，可随时切换到本地 Mock。
 
 ## API 文档
 
